@@ -18,7 +18,7 @@
         android:id="@+id/tv_question_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="title:"
+        android:text="Android question title:"
         android:textSize="15sp"
         android:textStyle="bold"
         android:layout_marginBottom="8dp" />
@@ -27,37 +27,37 @@
         android:id="@+id/tv_question_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="question"
+        android:text="Question details go here"
         android:textSize="14sp"
         android:layout_marginBottom="24dp" />
 
-    <Button
-        android:id="@+id/btn_answer_0"
+    <RadioButton
+        android:id="@+id/rb_answer_0"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="answer"
-        android:layout_marginBottom="8dp" />
+        android:textSize="14sp"
+        android:padding="8dp" />
 
-    <Button
-        android:id="@+id/btn_answer_1"
+    <RadioButton
+        android:id="@+id/rb_answer_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Answer"
-        android:layout_marginBottom="8dp" />
+        android:textSize="14sp"
+        android:padding="8dp" />
 
-    <Button
-        android:id="@+id/btn_answer_2"
+    <RadioButton
+        android:id="@+id/rb_answer_2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Answer"
-        android:layout_marginBottom="8dp" />
+        android:textSize="14sp"
+        android:padding="8dp" />
 
-    <Button
-        android:id="@+id/btn_answer_3"
+    <RadioButton
+        android:id="@+id/rb_answer_3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Answer"
-        android:layout_marginBottom="8dp" />
+        android:textSize="14sp"
+        android:padding="8dp" />
 
     <Space
         android:layout_width="match_parent"
