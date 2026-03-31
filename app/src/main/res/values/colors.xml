@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="screen_bg">#F5F3EF</color>
+    <color name="divider">#D0CEC8</color>
+    <color name="text_primary">#1A1A2E</color>
+    <color name="text_secondary">#888888</color>
+    <color name="text_on_primary">#FFFFFF</color>
+    <color name="answer_default_bg">#FFFFFF</color>
+    <color name="answer_default_stroke">#C8C8C8</color>
+    <color name="answer_selected_bg">#5B5BD6</color>
+    <color name="correct_green">#4CAF50</color>
+    <color name="incorrect_red">#F44336</color>
+    <color name="btn_primary">#5B5BD6</color>
+    <color name="btn_submit_bg">#DDDBD5</color>
 </resources>
