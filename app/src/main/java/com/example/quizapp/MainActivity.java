@@ -10,14 +10,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        EditText etName  = findViewById(R.id.et_name);
+        EditText etName   = findViewById(R.id.et_name);
         Button   btnStart = findViewById(R.id.btn_start);
+
+        String returnedName = getIntent().getStringExtra("name");
+        if (returnedName != null) {
+            etName.setText(returnedName);
+        }
 
         btnStart.setOnClickListener(v -> {
             String name = etName.getText().toString().trim();
