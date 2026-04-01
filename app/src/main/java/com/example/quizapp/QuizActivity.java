@@ -1,5 +1,6 @@
 package com.example.quizapp;
 
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -61,6 +62,8 @@ public class QuizActivity extends AppCompatActivity {
         radioButtons.add(findViewById(R.id.rb_answer_2));
         radioButtons.add(findViewById(R.id.rb_answer_3));
 
+        progressBar.setMax(100);
+
         for (RadioButton rb : radioButtons) {
             rb.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 if (submitted) return;
@@ -82,12 +85,14 @@ public class QuizActivity extends AppCompatActivity {
 
     private void updateProgress() {
         int total      = QUESTIONS.size();
-        int completed  = currentIndex; // questions fully answered so far
-        int percentage = (completed * 100) / total;
+        int percentage = (currentIndex * 100) / total;
 
         tvProgress.setText("Question " + (currentIndex + 1) + "/" + total
                 + " (" + percentage + "% completed)");
-        progressBar.setProgress(percentage);
+
+        ObjectAnimator.ofInt(progressBar, "progress", progressBar.getProgress(), percentage)
+                .setDuration(300)
+                .start();
     }
 
     private void loadQuestion() {
