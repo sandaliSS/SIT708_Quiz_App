@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,10 +15,23 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ThemeHelper.apply(this);
         setContentView(R.layout.activity_main);
 
         EditText etName   = findViewById(R.id.et_name);
         Button   btnStart = findViewById(R.id.btn_start);
+
+        TextView tvThemeLabel = findViewById(R.id.tv_theme_label);
+        Switch switchTheme    = findViewById(R.id.switch_theme);
+
+        tvThemeLabel.setText(ThemeHelper.isDarkMode(this) ? "Light Mode" : "Dark Mode");
+
+        switchTheme.setChecked(ThemeHelper.isDarkMode(this));
+        switchTheme.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (!buttonView.isPressed()) return;
+            ThemeHelper.setDarkMode(this, isChecked);
+            tvThemeLabel.setText(isChecked ? "Light Mode" : "Dark Mode");
+        });
 
         String returnedName = getIntent().getStringExtra("name");
         if (returnedName != null) {

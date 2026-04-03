@@ -5,8 +5,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ProgressBar;
-import android.widget.RadioButton;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,26 +19,30 @@ public class QuizActivity extends AppCompatActivity {
     private static final List<Question> QUESTIONS = new ArrayList<>();
 
     static {
-        QUESTIONS.add(new Question("Android question title:",
+        QUESTIONS.add(new Question("Question 1:",
                 "Which method is called when an Activity is first created?",
                 new String[]{"onStart()", "onCreate()", "onResume()", "onAttach()"}, 1));
-        QUESTIONS.add(new Question("Android question title:",
+        QUESTIONS.add(new Question("Question 2:",
                 "Which layout arranges children in a single row or column?",
                 new String[]{"RelativeLayout", "ConstraintLayout", "LinearLayout", "FrameLayout"}, 2));
-        QUESTIONS.add(new Question("Android question title:",
+        QUESTIONS.add(new Question("Question 3:",
                 "What file format does Android use to define UI layouts?",
                 new String[]{"JSON", "YAML", "XML", "HTML"}, 2));
-        QUESTIONS.add(new Question("Android question title:",
+        QUESTIONS.add(new Question("Question 4:",
                 "Which component runs long operations in the background?",
                 new String[]{"Fragment", "Service", "BroadcastReceiver", "ContentProvider"}, 1));
-        QUESTIONS.add(new Question("Android question title:",
+        QUESTIONS.add(new Question("Question 5:",
                 "What does ADB stand for in Android development?",
                 new String[]{"App Debug Bridge", "Android Debug Bridge", "Android Device Builder", "App Device Builder"}, 1));
     }
 
+    private static final String KEY_INDEX     = "current_index";
+    private static final String KEY_SCORE     = "score";
+    private static final String KEY_SUBMITTED = "submitted";
+
     private TextView tvProgress, tvQuestionTitle, tvQuestionDetail;
     private ProgressBar progressBar;
-    private List<RadioButton> radioButtons = new ArrayList<>();
+    private List<CheckBox> checkBoxes = new ArrayList<>();
     private Button btnSubmit;
 
     private String userName;
@@ -50,6 +55,13 @@ public class QuizActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
 
+        // Restore state if activity was recreated (e.g. theme toggle)
+        if (savedInstanceState != null) {
+            currentIndex = savedInstanceState.getInt(KEY_INDEX, 0);
+            score        = savedInstanceState.getInt(KEY_SCORE, 0);
+            submitted    = savedInstanceState.getBoolean(KEY_SUBMITTED, false);
+        }
+
         userName         = getIntent().getStringExtra("name");
         tvProgress       = findViewById(R.id.tv_progress);
         tvQuestionTitle  = findViewById(R.id.tv_question_title);
@@ -57,28 +69,48 @@ public class QuizActivity extends AppCompatActivity {
         progressBar      = findViewById(R.id.progress_bar);
         btnSubmit        = findViewById(R.id.btn_submit);
 
-        radioButtons.add(findViewById(R.id.rb_answer_0));
-        radioButtons.add(findViewById(R.id.rb_answer_1));
-        radioButtons.add(findViewById(R.id.rb_answer_2));
-        radioButtons.add(findViewById(R.id.rb_answer_3));
+        checkBoxes.add(findViewById(R.id.cb_answer_0));
+        checkBoxes.add(findViewById(R.id.cb_answer_1));
+        checkBoxes.add(findViewById(R.id.cb_answer_2));
+        checkBoxes.add(findViewById(R.id.cb_answer_3));
 
-        progressBar.setMax(100);
+        TextView tvThemeLabel = findViewById(R.id.tv_theme_label);
+        Switch switchTheme    = findViewById(R.id.switch_theme);
 
-        for (RadioButton rb : radioButtons) {
-            rb.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        tvThemeLabel.setText(ThemeHelper.isDarkMode(this) ? "Light Mode" : "Dark Mode");
+
+        switchTheme.setChecked(ThemeHelper.isDarkMode(this));
+        switchTheme.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (!buttonView.isPressed()) return;
+            ThemeHelper.setDarkMode(this, isChecked);
+            tvThemeLabel.setText(isChecked ? "Light Mode" : "Dark Mode");
+        });
+
+        for (CheckBox cb : checkBoxes) {
+            cb.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 if (submitted) return;
                 btnSubmit.setEnabled(anyChecked());
             });
         }
 
+        progressBar.setMax(100);
         btnSubmit.setOnClickListener(v -> onSubmitClicked());
 
         loadQuestion();
     }
 
+    // Save state before activity is destroyed by theme change
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(KEY_INDEX, currentIndex);
+        outState.putInt(KEY_SCORE, score);
+        outState.putBoolean(KEY_SUBMITTED, submitted);
+    }
+
     private boolean anyChecked() {
-        for (RadioButton rb : radioButtons) {
-            if (rb.isChecked()) return true;
+        for (CheckBox cb : checkBoxes) {
+            if (cb.isChecked()) return true;
         }
         return false;
     }
@@ -86,10 +118,8 @@ public class QuizActivity extends AppCompatActivity {
     private void updateProgress() {
         int total      = QUESTIONS.size();
         int percentage = (currentIndex * 100) / total;
-
         tvProgress.setText("Question " + (currentIndex + 1) + "/" + total
                 + " (" + percentage + "% completed)");
-
         ObjectAnimator.ofInt(progressBar, "progress", progressBar.getProgress(), percentage)
                 .setDuration(300)
                 .start();
@@ -103,17 +133,17 @@ public class QuizActivity extends AppCompatActivity {
         tvQuestionDetail.setText(q.getDetail());
 
         String[] answers = q.getAnswers();
-        for (int i = 0; i < radioButtons.size(); i++) {
-            RadioButton rb = radioButtons.get(i);
-            rb.setText(answers[i]);
-            rb.setChecked(false);
-            rb.setEnabled(true);
-            rb.setTextColor(Color.BLACK);
+        for (int i = 0; i < checkBoxes.size(); i++) {
+            CheckBox cb = checkBoxes.get(i);
+            cb.setText(answers[i]);
+            cb.setChecked(false);
+            cb.setEnabled(true);
+            cb.setButtonTintList(null);
+            cb.setTextColor(ThemeHelper.isDarkMode(this) ? Color.WHITE : Color.BLACK);
         }
 
         btnSubmit.setText("Submit");
         btnSubmit.setEnabled(false);
-
         updateProgress();
     }
 
@@ -127,16 +157,16 @@ public class QuizActivity extends AppCompatActivity {
             submitted = true;
             Question q = QUESTIONS.get(currentIndex);
 
-            for (RadioButton rb : radioButtons) rb.setEnabled(false);
+            for (CheckBox cb : checkBoxes) cb.setEnabled(false);
 
-            boolean correct = radioButtons.get(q.getCorrectIndex()).isChecked();
+            boolean correct = checkBoxes.get(q.getCorrectIndex()).isChecked();
 
-            for (int i = 0; i < radioButtons.size(); i++) {
-                RadioButton rb = radioButtons.get(i);
+            for (int i = 0; i < checkBoxes.size(); i++) {
+                CheckBox cb = checkBoxes.get(i);
                 if (i == q.getCorrectIndex()) {
-                    rb.setTextColor(Color.parseColor("#4CAF50"));
-                } else if (rb.isChecked()) {
-                    rb.setTextColor(Color.parseColor("#F44336"));
+                    cb.setTextColor(Color.parseColor("#4CAF50"));
+                } else if (cb.isChecked()) {
+                    cb.setTextColor(Color.parseColor("#F44336"));
                 }
             }
 
@@ -147,10 +177,6 @@ public class QuizActivity extends AppCompatActivity {
         } else {
             currentIndex++;
             if (currentIndex >= QUESTIONS.size()) {
-                // Progress bar to 100% before leaving
-                tvProgress.setText("Question " + QUESTIONS.size() + "/" + QUESTIONS.size() + " (100% completed)");
-                progressBar.setProgress(100);
-
                 Intent intent = new Intent(this, ResultActivity.class);
                 intent.putExtra("name", userName);
                 intent.putExtra("score", score);

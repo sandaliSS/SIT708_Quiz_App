@@ -1,84 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:padding="20dp">
 
-    <TextView
-        android:id="@+id/tv_progress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Question 1/5 (0%)"
-        android:textSize="13sp"
-        android:layout_marginBottom="4dp" />
-
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="12dp"
-        android:max="100"
-        android:progress="0"
-        android:layout_marginBottom="20dp" />
-
-    <TextView
-        android:id="@+id/tv_question_title"
+    <!-- Top bar: title left, switch right -->
+    <LinearLayout
+        android:id="@+id/top_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Android question title:"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="8dp" />
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_alignParentTop="true">
 
-    <TextView
-        android:id="@+id/tv_question_detail"
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="SIT305 Quiz"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_theme_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dark Mode"
+            android:textSize="13sp"
+            android:layout_marginEnd="6dp" />
+
+        <Switch
+            android:id="@+id/switch_theme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <!-- Rest of quiz content below top bar -->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Question details go here"
-        android:textSize="14sp"
-        android:layout_marginBottom="24dp" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_below="@id/top_bar"
+        android:layout_marginTop="8dp">
 
-    <RadioButton
-        android:id="@+id/rb_answer_0"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:padding="8dp" />
+        <TextView
+            android:id="@+id/tv_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Question 1/5 (0%)"
+            android:textSize="13sp"
+            android:layout_marginBottom="4dp" />
 
-    <RadioButton
-        android:id="@+id/rb_answer_1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:padding="8dp" />
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="12dp"
+            android:max="100"
+            android:progress="0"
+            android:layout_marginBottom="20dp" />
 
-    <RadioButton
-        android:id="@+id/rb_answer_2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:padding="8dp" />
+        <TextView
+            android:id="@+id/tv_question_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Android question title:"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
 
-    <RadioButton
-        android:id="@+id/rb_answer_3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:padding="8dp" />
+        <TextView
+            android:id="@+id/tv_question_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Question details go here"
+            android:textSize="14sp"
+            android:layout_marginBottom="24dp" />
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+        <CheckBox
+            android:id="@+id/cb_answer_0"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:padding="8dp"
+            android:textColor="?android:attr/textColorPrimary" />
 
-    <Button
-        android:id="@+id/btn_submit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="Submit"
-        android:enabled="false" />
+        <CheckBox
+            android:id="@+id/cb_answer_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:padding="8dp"
+            android:textColor="?android:attr/textColorPrimary" />
 
-</LinearLayout>
+        <CheckBox
+            android:id="@+id/cb_answer_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:padding="8dp"
+            android:textColor="?android:attr/textColorPrimary" />
+
+        <CheckBox
+            android:id="@+id/cb_answer_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:padding="8dp"
+            android:textColor="?android:attr/textColorPrimary" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/btn_submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Submit"
+            android:enabled="false" />
+
+    </LinearLayout>
+
+</RelativeLayout>
