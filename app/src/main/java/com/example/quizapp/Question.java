@@ -5,17 +5,17 @@ public class Question {
     private String title;
     private String detail;
     private String[] answers;
-    private int correctIndex;
+    private int correctAnswer;
 
     public Question(String title, String detail, String[] answers, int correctIndex) {
         this.title = title;
         this.detail = detail;
         this.answers = answers;
-        this.correctIndex = correctIndex;
+        this.correctAnswer = correctAnswer;
     }
 
     public String getTitle() { return title; }
     public String getDetail() { return detail; }
     public String[] getAnswers() { return answers; }
-    public int getCorrectIndex() { return correctIndex; }
+    public int getCorrectAnswer() { return correctAnswer; }
 }

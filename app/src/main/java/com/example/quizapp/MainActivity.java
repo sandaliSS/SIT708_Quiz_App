@@ -14,8 +14,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         ThemeHelper.apply(this);
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         EditText etName   = findViewById(R.id.et_name);

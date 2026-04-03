@@ -55,7 +55,6 @@ public class QuizActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
 
-        // Restore state if activity was recreated (e.g. theme toggle)
         if (savedInstanceState != null) {
             currentIndex = savedInstanceState.getInt(KEY_INDEX, 0);
             score        = savedInstanceState.getInt(KEY_SCORE, 0);
@@ -85,14 +84,6 @@ public class QuizActivity extends AppCompatActivity {
             ThemeHelper.setDarkMode(this, isChecked);
             tvThemeLabel.setText(isChecked ? "Light Mode" : "Dark Mode");
         });
-
-        for (CheckBox cb : checkBoxes) {
-            cb.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                if (submitted) return;
-                btnSubmit.setEnabled(anyChecked());
-            });
-        }
-
         progressBar.setMax(100);
         btnSubmit.setOnClickListener(v -> onSubmitClicked());
 
@@ -143,7 +134,6 @@ public class QuizActivity extends AppCompatActivity {
         }
 
         btnSubmit.setText("Submit");
-        btnSubmit.setEnabled(false);
         updateProgress();
     }
 
@@ -159,11 +149,11 @@ public class QuizActivity extends AppCompatActivity {
 
             for (CheckBox cb : checkBoxes) cb.setEnabled(false);
 
-            boolean correct = checkBoxes.get(q.getCorrectIndex()).isChecked();
+            boolean correct = checkBoxes.get(q.getCorrectAnswer()).isChecked();
 
             for (int i = 0; i < checkBoxes.size(); i++) {
                 CheckBox cb = checkBoxes.get(i);
-                if (i == q.getCorrectIndex()) {
+                if (i == q.getCorrectAnswer()) {
                     cb.setTextColor(Color.parseColor("#4CAF50"));
                 } else if (cb.isChecked()) {
                     cb.setTextColor(Color.parseColor("#F44336"));
@@ -178,7 +168,7 @@ public class QuizActivity extends AppCompatActivity {
             currentIndex++;
             if (currentIndex >= QUESTIONS.size()) {
                 Intent intent = new Intent(this, ResultActivity.class);
-                intent.putExtra("name", userName);
+                intent.putExtra("name",userName);
                 intent.putExtra("score", score);
                 intent.putExtra("total", QUESTIONS.size());
                 startActivity(intent);

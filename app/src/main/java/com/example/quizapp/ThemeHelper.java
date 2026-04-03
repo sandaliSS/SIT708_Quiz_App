@@ -15,7 +15,6 @@ public class ThemeHelper {
     }
 
     public static void setDarkMode(Context context, boolean dark) {
-        // Save preference
         context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
                 .edit().putBoolean(KEY_DARK, dark).apply();
 
