@@ -72,14 +72,3 @@ app/src/main/
 4. Run on an emulator or physical device (API 21+)
 
 ---
-
-## Theme Support
-
-The app uses `AppCompatDelegate` with `DayNight` theming. The selected mode is saved to `SharedPreferences` and applied before `setContentView` on every Activity to prevent flash on launch.
-
-```java
-// Applied in every Activity onCreate before setContentView
-ThemeHelper.apply(this);
-```
-
-Dark mode overrides are defined in `res/values-night/themes.xml` and picked up automatically by the Android resource system when night mode is active.
